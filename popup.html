@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link Extraction</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Список ссылок</h1>
+
+    <div class="controls">
+      <button id="listBtn" class="btn active">Список</button>
+      <button id="csvBtn" class="btn">CSV</button>
+      <label class="checkbox-label">
+        <input type="checkbox" id="groupCheckbox" checked>
+        Учитывать группы вкладок
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="titleCheckbox" checked>
+        Показывать заголовок страницы
+      </label>
+      <button id="copyBtn" class="btn-copy">Копировать</button>
+    </div>
+
+    <div id="output" class="output"></div>
+
+    <div id="notification" class="notification hidden">Скопировано!</div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
