@@ -5,6 +5,7 @@ let tabsData = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadTabs();
+  updateTabCount();
   displayData();
 
   document.getElementById('listBtn').addEventListener('click', () => {
@@ -74,6 +75,28 @@ async function loadTabs() {
     groups: Object.values(groups),
     ungrouped: ungroupedTabs
   };
+}
+
+function updateTabCount() {
+  const totalTabs = tabsData.groups.reduce((sum, g) => sum + g.tabs.length, 0) + tabsData.ungrouped.length;
+  const groupCount = tabsData.groups.length;
+
+  let countText = `${totalTabs} ${pluralize(totalTabs, 'вкладка', 'вкладки', 'вкладок')}`;
+  if (groupCount > 0) {
+    countText += ` · ${groupCount} ${pluralize(groupCount, 'группа', 'группы', 'групп')}`;
+  }
+
+  document.getElementById('tabCount').textContent = countText;
+}
+
+function pluralize(n, one, few, many) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+
+  if (mod100 >= 11 && mod100 <= 19) return many;
+  if (mod10 === 1) return one;
+  if (mod10 >= 2 && mod10 <= 4) return few;
+  return many;
 }
 
 function formatAsList() {
@@ -211,8 +234,8 @@ function copyToClipboard() {
 
 function showNotification() {
   const notification = document.getElementById('notification');
-  notification.classList.remove('hidden');
+  notification.classList.add('show');
   setTimeout(() => {
-    notification.classList.add('hidden');
-  }, 2000);
+    notification.classList.remove('show');
+  }, 2500);
 }
