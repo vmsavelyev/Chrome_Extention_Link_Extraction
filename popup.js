@@ -1,6 +1,7 @@
 let currentFormat = 'list';
 let useGrouping = true;
 let showTitle = true;
+let csvDelimiter = ',';
 let tabsData = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -11,13 +12,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('listBtn').addEventListener('click', () => {
     currentFormat = 'list';
     updateActiveButton();
+    updateCsvOptionsVisibility();
     displayData();
   });
 
   document.getElementById('csvBtn').addEventListener('click', () => {
     currentFormat = 'csv';
     updateActiveButton();
+    updateCsvOptionsVisibility();
     displayData();
+  });
+
+  document.querySelectorAll('.delimiter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.delimiter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      csvDelimiter = btn.dataset.delimiter;
+      displayData();
+    });
   });
 
   document.getElementById('groupCheckbox').addEventListener('change', (e) => {
@@ -147,6 +159,7 @@ function formatAsList() {
 
 function formatAsCSV() {
   let output = '';
+  const d = csvDelimiter;
 
   if (useGrouping) {
     for (const group of tabsData.groups) {
@@ -155,9 +168,9 @@ function formatAsCSV() {
         const url = escapeCSV(tab.url);
         if (showTitle) {
           const title = escapeCSV(tab.title);
-          output += `${groupName},${title},${url}\n`;
+          output += `${groupName}${d}${title}${d}${url}\n`;
         } else {
-          output += `${groupName},${url}\n`;
+          output += `${groupName}${d}${url}\n`;
         }
       }
     }
@@ -166,9 +179,9 @@ function formatAsCSV() {
       const url = escapeCSV(tab.url);
       if (showTitle) {
         const title = escapeCSV(tab.title);
-        output += `No Group,${title},${url}\n`;
+        output += `No Group${d}${title}${d}${url}\n`;
       } else {
-        output += `No Group,${url}\n`;
+        output += `No Group${d}${url}\n`;
       }
     }
   } else {
@@ -177,7 +190,7 @@ function formatAsCSV() {
         const url = escapeCSV(tab.url);
         if (showTitle) {
           const title = escapeCSV(tab.title);
-          output += `${title},${url}\n`;
+          output += `${title}${d}${url}\n`;
         } else {
           output += `${url}\n`;
         }
@@ -188,7 +201,7 @@ function formatAsCSV() {
       const url = escapeCSV(tab.url);
       if (showTitle) {
         const title = escapeCSV(tab.title);
-        output += `${title},${url}\n`;
+        output += `${title}${d}${url}\n`;
       } else {
         output += `${url}\n`;
       }
@@ -199,7 +212,7 @@ function formatAsCSV() {
 }
 
 function escapeCSV(text) {
-  if (text.includes(',') || text.includes('"') || text.includes('\n')) {
+  if (text.includes(csvDelimiter) || text.includes('"') || text.includes('\n')) {
     return `"${text.replace(/"/g, '""')}"`;
   }
   return text;
@@ -221,6 +234,13 @@ function displayData() {
 function updateActiveButton() {
   document.getElementById('listBtn').classList.toggle('active', currentFormat === 'list');
   document.getElementById('csvBtn').classList.toggle('active', currentFormat === 'csv');
+}
+
+function updateCsvOptionsVisibility() {
+  const csvOptions = document.querySelectorAll('.csv-option');
+  csvOptions.forEach(el => {
+    el.classList.toggle('visible', currentFormat === 'csv');
+  });
 }
 
 function copyToClipboard() {
