@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Link Extraction",
-  "version": "1.1",
+  "name": "Cozy Link Extraction",
+  "version": "1.2",
   "description": "Собирает список ссылок из активного окна браузера с поддержкой групп вкладок",
   "permissions": [
     "tabs",
