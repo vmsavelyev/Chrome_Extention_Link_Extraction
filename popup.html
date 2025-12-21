@@ -18,7 +18,11 @@
         </div>
         <div class="header-text">
           <h1>Link Extraction</h1>
-          <p class="subtitle" id="tabCount">Загрузка...</p>
+          <p class="subtitle" id="tabCount" data-i18n="loading">Загрузка...</p>
+        </div>
+        <div class="lang-selector">
+          <button class="lang-btn active" data-lang="ru">RU</button>
+          <button class="lang-btn" data-lang="en">ENG</button>
         </div>
       </div>
     </header>
@@ -34,7 +38,7 @@
             <line x1="3" y1="12" x2="3.01" y2="12"></line>
             <line x1="3" y1="18" x2="3.01" y2="18"></line>
           </svg>
-          <span>Список</span>
+          <span data-i18n="list">Список</span>
         </button>
         <button id="csvBtn" class="segment" data-format="csv">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -43,7 +47,7 @@
             <line x1="16" y1="13" x2="8" y2="13"></line>
             <line x1="16" y1="17" x2="8" y2="17"></line>
           </svg>
-          <span>CSV</span>
+          <span data-i18n="csv">CSV</span>
         </button>
       </div>
     </div>
@@ -51,8 +55,8 @@
     <div class="options-card">
       <label class="toggle-option">
         <span class="toggle-text">
-          <span class="toggle-label">Группы вкладок</span>
-          <span class="toggle-description">Отображать группировку вкладок</span>
+          <span class="toggle-label" data-i18n="tabGroups">Группы вкладок</span>
+          <span class="toggle-description" data-i18n="tabGroupsDesc">Отображать группировку вкладок</span>
         </span>
         <div class="toggle-switch">
           <input type="checkbox" id="groupCheckbox" checked>
@@ -62,8 +66,8 @@
       <div class="option-divider"></div>
       <label class="toggle-option">
         <span class="toggle-text">
-          <span class="toggle-label">Заголовки страниц</span>
-          <span class="toggle-description">Показывать названия страниц</span>
+          <span class="toggle-label" data-i18n="pageTitles">Заголовки страниц</span>
+          <span class="toggle-description" data-i18n="pageTitlesDesc">Показывать названия страниц</span>
         </span>
         <div class="toggle-switch">
           <input type="checkbox" id="titleCheckbox" checked>
@@ -73,26 +77,26 @@
       <div class="option-divider csv-option"></div>
       <div class="toggle-option csv-option">
         <span class="toggle-text">
-          <span class="toggle-label">Разделитель CSV</span>
-          <span class="toggle-description">Символ между значениями</span>
+          <span class="toggle-label" data-i18n="csvDelimiter">Разделитель CSV</span>
+          <span class="toggle-description" data-i18n="csvDelimiterDesc">Символ между значениями</span>
         </span>
         <div class="delimiter-selector">
-          <button class="delimiter-btn active" data-delimiter="," title="Запятая">,</button>
-          <button class="delimiter-btn" data-delimiter=";" title="Точка с запятой">;</button>
-          <button class="delimiter-btn" data-delimiter="|" title="Вертикальная черта">|</button>
+          <button class="delimiter-btn active" data-delimiter="," data-i18n-title="comma" title="Запятая">,</button>
+          <button class="delimiter-btn" data-delimiter=";" data-i18n-title="semicolon" title="Точка с запятой">;</button>
+          <button class="delimiter-btn" data-delimiter="|" data-i18n-title="pipe" title="Вертикальная черта">|</button>
         </div>
       </div>
     </div>
 
     <div class="output-container">
       <div class="output-header">
-        <span class="output-title">Результат</span>
+        <span class="output-title" data-i18n="result">Результат</span>
         <button id="copyBtn" class="copy-button">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
-          <span>Копировать</span>
+          <span data-i18n="copy">Копировать</span>
         </button>
       </div>
       <div id="output" class="output"></div>
@@ -102,7 +106,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
-      <span>Скопировано в буфер обмена</span>
+      <span data-i18n="copied">Скопировано в буфер обмена</span>
     </div>
   </div>
 

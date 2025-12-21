@@ -1,0 +1,102 @@
+{
+  "appName": {
+    "message": "Cozy Link Extraction",
+    "description": "Название расширения"
+  },
+  "appDescription": {
+    "message": "Собирает список ссылок из активного окна браузера с поддержкой групп вкладок",
+    "description": "Описание расширения"
+  },
+  "loading": {
+    "message": "Загрузка...",
+    "description": "Текст загрузки"
+  },
+  "list": {
+    "message": "Список",
+    "description": "Кнопка формата список"
+  },
+  "csv": {
+    "message": "CSV",
+    "description": "Кнопка формата CSV"
+  },
+  "tabGroups": {
+    "message": "Группы вкладок",
+    "description": "Опция группировки"
+  },
+  "tabGroupsDesc": {
+    "message": "Отображать группировку вкладок",
+    "description": "Описание опции группировки"
+  },
+  "pageTitles": {
+    "message": "Заголовки страниц",
+    "description": "Опция заголовков"
+  },
+  "pageTitlesDesc": {
+    "message": "Показывать названия страниц",
+    "description": "Описание опции заголовков"
+  },
+  "csvDelimiter": {
+    "message": "Разделитель CSV",
+    "description": "Опция разделителя"
+  },
+  "csvDelimiterDesc": {
+    "message": "Символ между значениями",
+    "description": "Описание опции разделителя"
+  },
+  "comma": {
+    "message": "Запятая",
+    "description": "Разделитель запятая"
+  },
+  "semicolon": {
+    "message": "Точка с запятой",
+    "description": "Разделитель точка с запятой"
+  },
+  "pipe": {
+    "message": "Вертикальная черта",
+    "description": "Разделитель вертикальная черта"
+  },
+  "result": {
+    "message": "Результат",
+    "description": "Заголовок результата"
+  },
+  "copy": {
+    "message": "Копировать",
+    "description": "Кнопка копирования"
+  },
+  "copied": {
+    "message": "Скопировано в буфер обмена",
+    "description": "Уведомление о копировании"
+  },
+  "noGroup": {
+    "message": "Без группы",
+    "description": "Текст для вкладок без группы"
+  },
+  "untitled": {
+    "message": "Без названия",
+    "description": "Группа без названия"
+  },
+  "tab_one": {
+    "message": "вкладка",
+    "description": "Склонение для 1"
+  },
+  "tab_few": {
+    "message": "вкладки",
+    "description": "Склонение для 2-4"
+  },
+  "tab_many": {
+    "message": "вкладок",
+    "description": "Склонение для 5+"
+  },
+  "group_one": {
+    "message": "группа",
+    "description": "Склонение для 1"
+  },
+  "group_few": {
+    "message": "группы",
+    "description": "Склонение для 2-4"
+  },
+  "group_many": {
+    "message": "групп",
+    "description": "Склонение для 5+"
+  }
+}

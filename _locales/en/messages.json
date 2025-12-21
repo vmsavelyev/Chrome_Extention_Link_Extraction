@@ -1,0 +1,102 @@
+{
+  "appName": {
+    "message": "Cozy Link Extraction",
+    "description": "Extension name"
+  },
+  "appDescription": {
+    "message": "Collects a list of links from the active browser window with tab group support",
+    "description": "Extension description"
+  },
+  "loading": {
+    "message": "Loading...",
+    "description": "Loading text"
+  },
+  "list": {
+    "message": "List",
+    "description": "List format button"
+  },
+  "csv": {
+    "message": "CSV",
+    "description": "CSV format button"
+  },
+  "tabGroups": {
+    "message": "Tab Groups",
+    "description": "Grouping option"
+  },
+  "tabGroupsDesc": {
+    "message": "Display tab grouping",
+    "description": "Grouping option description"
+  },
+  "pageTitles": {
+    "message": "Page Titles",
+    "description": "Titles option"
+  },
+  "pageTitlesDesc": {
+    "message": "Show page titles",
+    "description": "Titles option description"
+  },
+  "csvDelimiter": {
+    "message": "CSV Delimiter",
+    "description": "Delimiter option"
+  },
+  "csvDelimiterDesc": {
+    "message": "Character between values",
+    "description": "Delimiter option description"
+  },
+  "comma": {
+    "message": "Comma",
+    "description": "Comma delimiter"
+  },
+  "semicolon": {
+    "message": "Semicolon",
+    "description": "Semicolon delimiter"
+  },
+  "pipe": {
+    "message": "Vertical bar",
+    "description": "Pipe delimiter"
+  },
+  "result": {
+    "message": "Result",
+    "description": "Result header"
+  },
+  "copy": {
+    "message": "Copy",
+    "description": "Copy button"
+  },
+  "copied": {
+    "message": "Copied to clipboard",
+    "description": "Copy notification"
+  },
+  "noGroup": {
+    "message": "No Group",
+    "description": "Text for ungrouped tabs"
+  },
+  "untitled": {
+    "message": "Untitled",
+    "description": "Untitled group"
+  },
+  "tab_one": {
+    "message": "tab",
+    "description": "Singular"
+  },
+  "tab_few": {
+    "message": "tabs",
+    "description": "Plural 2-4"
+  },
+  "tab_many": {
+    "message": "tabs",
+    "description": "Plural 5+"
+  },
+  "group_one": {
+    "message": "group",
+    "description": "Singular"
+  },
+  "group_few": {
+    "message": "groups",
+    "description": "Plural 2-4"
+  },
+  "group_many": {
+    "message": "groups",
+    "description": "Plural 5+"
+  }
+}

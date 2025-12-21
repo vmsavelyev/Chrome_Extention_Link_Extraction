@@ -1,11 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Cozy Link Extraction",
-  "version": "1.2",
-  "description": "Собирает список ссылок из активного окна браузера с поддержкой групп вкладок",
+  "name": "__MSG_appName__",
+  "version": "1.3",
+  "description": "__MSG_appDescription__",
+  "default_locale": "ru",
   "permissions": [
     "tabs",
-    "tabGroups"
+    "tabGroups",
+    "storage"
   ],
   "action": {
     "default_popup": "popup.html",

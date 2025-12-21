@@ -50,6 +50,41 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
+  flex-wrap: nowrap;
+}
+
+/* Language Selector */
+.lang-selector {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  border: 1px solid var(--border);
+}
+
+.lang-btn {
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  transition: all var(--transition);
+  letter-spacing: 0.3px;
+}
+
+.lang-btn:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.lang-btn.active {
+  background: var(--accent);
+  color: white;
 }
 
 .logo {
