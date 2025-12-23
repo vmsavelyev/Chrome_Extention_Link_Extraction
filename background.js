@@ -362,8 +362,11 @@ async function showNotification(language, tabCount) {
         document.body.appendChild(notification);
 
         // Анимация появления (выезжает справа)
+        // Двойной requestAnimationFrame для гарантии отрисовки начального состояния
         requestAnimationFrame(() => {
-          notification.style.transform = 'translateX(0)';
+          requestAnimationFrame(() => {
+            notification.style.transform = 'translateX(0)';
+          });
         });
 
         // Автоматическое скрытие
