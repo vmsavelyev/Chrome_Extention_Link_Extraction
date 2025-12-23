@@ -35,6 +35,13 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 });
 
+// Обработка горячих клавиш
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command === 'copy-selected-tabs') {
+    await copySelectedTabs();
+  }
+});
+
 // Основная функция копирования выделенных вкладок
 async function copySelectedTabs() {
   try {

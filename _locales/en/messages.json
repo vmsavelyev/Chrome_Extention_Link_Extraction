@@ -110,5 +110,21 @@
   "copyAll": {
     "message": "All",
     "description": "Button to copy all tabs"
+  },
+  "commandCopySelected": {
+    "message": "Copy selected tabs",
+    "description": "Keyboard shortcut description for copying selected tabs"
+  },
+  "shortcutLabel": {
+    "message": "Keyboard shortcut",
+    "description": "Label for keyboard shortcut display"
+  },
+  "configureShortcut": {
+    "message": "Configure",
+    "description": "Button to configure keyboard shortcut"
+  },
+  "notSet": {
+    "message": "Not set",
+    "description": "Text when keyboard shortcut is not configured"
   }
 }

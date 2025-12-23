@@ -34,7 +34,10 @@ const translations = {
     tab_many: 'вкладок',
     group_one: 'группа',
     group_few: 'группы',
-    group_many: 'групп'
+    group_many: 'групп',
+    shortcutLabel: 'Горячая клавиша',
+    configureShortcut: 'Настроить',
+    notSet: 'Не задано'
   },
   en: {
     loading: 'Loading...',
@@ -61,7 +64,10 @@ const translations = {
     tab_many: 'tabs',
     group_one: 'group',
     group_few: 'groups',
-    group_many: 'groups'
+    group_many: 'groups',
+    shortcutLabel: 'Keyboard shortcut',
+    configureShortcut: 'Configure',
+    notSet: 'Not set'
   }
 };
 
@@ -202,6 +208,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('copySelectedBtn').addEventListener('click', () => {
     copySelectedToClipboard();
+  });
+
+  // Загрузить и отобразить горячую клавишу
+  loadShortcut();
+
+  // Кнопка настройки горячей клавиши
+  document.getElementById('configureShortcutBtn').addEventListener('click', () => {
+    chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
   });
 });
 
@@ -583,4 +597,35 @@ function showNotification() {
   setTimeout(() => {
     notification.classList.remove('show');
   }, 2500);
+}
+
+async function loadShortcut() {
+  try {
+    const commands = await chrome.commands.getAll();
+    const copyCommand = commands.find(cmd => cmd.name === 'copy-selected-tabs');
+    const shortcutKeyEl = document.getElementById('shortcutKey');
+
+    if (copyCommand && copyCommand.shortcut) {
+      // Форматирование для лучшей читаемости
+      let shortcut = copyCommand.shortcut;
+      // Определить Mac через userAgentData или fallback
+      const isMac = navigator.userAgentData?.platform === 'macOS' ||
+                    navigator.userAgent.includes('Mac');
+      // Заменить + на пробелы с символами для Mac
+      if (isMac) {
+        shortcut = shortcut
+          .replace(/Alt\+/g, '⌥ ')
+          .replace(/Shift\+/g, '⇧ ')
+          .replace(/Ctrl\+/g, '⌃ ')
+          .replace(/Command\+/g, '⌘ ')
+          .replace(/MacCtrl\+/g, '⌃ ');
+      }
+      shortcutKeyEl.textContent = shortcut;
+    } else {
+      shortcutKeyEl.textContent = t('notSet');
+    }
+  } catch (e) {
+    console.error('Failed to load shortcut:', e);
+    document.getElementById('shortcutKey').textContent = '-';
+  }
 }

@@ -15,6 +15,15 @@
   "background": {
     "service_worker": "background.js"
   },
+  "commands": {
+    "copy-selected-tabs": {
+      "suggested_key": {
+        "default": "Alt+Shift+C",
+        "mac": "Alt+Shift+C"
+      },
+      "description": "__MSG_commandCopySelected__"
+    }
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
