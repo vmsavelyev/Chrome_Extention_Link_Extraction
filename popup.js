@@ -3,6 +3,8 @@ let useGrouping = true;
 let showTitle = true;
 let csvDelimiter = ',';
 let tabsData = { groups: [], ungrouped: [] };
+let selectedTabsData = { groups: [], ungrouped: [] };
+let selectedTabsCount = 0;
 let currentLang = 'ru';
 
 // Локализации
@@ -22,6 +24,8 @@ const translations = {
     pipe: 'Вертикальная черта',
     result: 'Результат',
     copy: 'Копировать',
+    copySelected: 'Выделенные',
+    copyAll: 'Все',
     copied: 'Скопировано в буфер обмена',
     noGroup: 'Без группы',
     untitled: 'Без названия',
@@ -47,6 +51,8 @@ const translations = {
     pipe: 'Vertical bar',
     result: 'Result',
     copy: 'Copy',
+    copySelected: 'Selected',
+    copyAll: 'All',
     copied: 'Copied to clipboard',
     noGroup: 'No Group',
     untitled: 'Untitled',
@@ -193,6 +199,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('copyBtn').addEventListener('click', () => {
     copyToClipboard();
   });
+
+  document.getElementById('copySelectedBtn').addEventListener('click', () => {
+    copySelectedToClipboard();
+  });
 });
 
 async function loadTabs() {
@@ -201,8 +211,19 @@ async function loadTabs() {
 
   const groups = {};
   const ungroupedTabs = [];
+  const selectedGroups = {};
+  const selectedUngroupedTabs = [];
+
+  // Подсчёт выделенных вкладок
+  const highlightedTabs = tabs.filter(tab => tab.highlighted);
+  selectedTabsCount = highlightedTabs.length;
 
   for (const tab of tabs) {
+    const tabData = {
+      title: tab.title,
+      url: tab.url
+    };
+
     if (tab.groupId !== chrome.tabGroups.TAB_GROUP_ID_NONE) {
       if (!groups[tab.groupId]) {
         groups[tab.groupId] = {
@@ -210,24 +231,41 @@ async function loadTabs() {
           tabs: []
         };
       }
-      groups[tab.groupId].tabs.push({
-        title: tab.title,
-        url: tab.url
-      });
+      groups[tab.groupId].tabs.push(tabData);
+
+      // Для выделенных вкладок
+      if (tab.highlighted) {
+        if (!selectedGroups[tab.groupId]) {
+          selectedGroups[tab.groupId] = {
+            groupName: '',
+            tabs: []
+          };
+        }
+        selectedGroups[tab.groupId].tabs.push(tabData);
+      }
     } else {
-      ungroupedTabs.push({
-        title: tab.title,
-        url: tab.url
-      });
+      ungroupedTabs.push(tabData);
+
+      // Для выделенных вкладок
+      if (tab.highlighted) {
+        selectedUngroupedTabs.push(tabData);
+      }
     }
   }
 
   for (const groupId in groups) {
     try {
       const group = await chrome.tabGroups.get(parseInt(groupId));
-      groups[groupId].groupName = group.title || t('untitled');
+      const groupName = group.title || t('untitled');
+      groups[groupId].groupName = groupName;
+      if (selectedGroups[groupId]) {
+        selectedGroups[groupId].groupName = groupName;
+      }
     } catch (e) {
       groups[groupId].groupName = t('untitled');
+      if (selectedGroups[groupId]) {
+        selectedGroups[groupId].groupName = t('untitled');
+      }
     }
   }
 
@@ -235,6 +273,26 @@ async function loadTabs() {
     groups: Object.values(groups),
     ungrouped: ungroupedTabs
   };
+
+  selectedTabsData = {
+    groups: Object.values(selectedGroups),
+    ungrouped: selectedUngroupedTabs
+  };
+
+  // Показать/скрыть кнопку выделенных вкладок
+  updateSelectedButton();
+}
+
+function updateSelectedButton() {
+  const btn = document.getElementById('copySelectedBtn');
+  const countSpan = document.getElementById('selectedCount');
+
+  if (selectedTabsCount > 1) {
+    btn.style.display = 'flex';
+    countSpan.textContent = `(${selectedTabsCount})`;
+  } else {
+    btn.style.display = 'none';
+  }
 }
 
 function updateTabCount() {
@@ -403,6 +461,120 @@ function copyToClipboard() {
   navigator.clipboard.writeText(text).then(() => {
     showNotification();
   });
+}
+
+function copySelectedToClipboard() {
+  let text;
+  if (currentFormat === 'list') {
+    text = formatAsListFrom(selectedTabsData);
+  } else {
+    text = formatAsCSVFrom(selectedTabsData);
+  }
+
+  navigator.clipboard.writeText(text).then(() => {
+    showNotification();
+  });
+}
+
+function formatAsListFrom(data) {
+  let output = '';
+
+  if (useGrouping) {
+    for (const group of data.groups) {
+      for (const tab of group.tabs) {
+        output += `${group.groupName}\n`;
+        if (showTitle) {
+          output += `${tab.title}\n`;
+        }
+        output += `${tab.url}\n`;
+        output += `\n`;
+      }
+    }
+
+    for (const tab of data.ungrouped) {
+      output += `${t('noGroup')}\n`;
+      if (showTitle) {
+        output += `${tab.title}\n`;
+      }
+      output += `${tab.url}\n`;
+      output += `\n`;
+    }
+  } else {
+    for (const group of data.groups) {
+      for (const tab of group.tabs) {
+        if (showTitle) {
+          output += `${tab.title}\n`;
+        }
+        output += `${tab.url}\n`;
+        output += `\n`;
+      }
+    }
+
+    for (const tab of data.ungrouped) {
+      if (showTitle) {
+        output += `${tab.title}\n`;
+      }
+      output += `${tab.url}\n`;
+      output += `\n`;
+    }
+  }
+
+  return output;
+}
+
+function formatAsCSVFrom(data) {
+  let output = '';
+  const d = csvDelimiter;
+
+  if (useGrouping) {
+    for (const group of data.groups) {
+      for (const tab of group.tabs) {
+        const groupName = escapeCSV(group.groupName);
+        const url = escapeCSV(tab.url);
+        if (showTitle) {
+          const title = escapeCSV(tab.title);
+          output += `${groupName}${d}${title}${d}${url}\n`;
+        } else {
+          output += `${groupName}${d}${url}\n`;
+        }
+      }
+    }
+
+    for (const tab of data.ungrouped) {
+      const url = escapeCSV(tab.url);
+      const noGroupText = escapeCSV(t('noGroup'));
+      if (showTitle) {
+        const title = escapeCSV(tab.title);
+        output += `${noGroupText}${d}${title}${d}${url}\n`;
+      } else {
+        output += `${noGroupText}${d}${url}\n`;
+      }
+    }
+  } else {
+    for (const group of data.groups) {
+      for (const tab of group.tabs) {
+        const url = escapeCSV(tab.url);
+        if (showTitle) {
+          const title = escapeCSV(tab.title);
+          output += `${title}${d}${url}\n`;
+        } else {
+          output += `${url}\n`;
+        }
+      }
+    }
+
+    for (const tab of data.ungrouped) {
+      const url = escapeCSV(tab.url);
+      if (showTitle) {
+        const title = escapeCSV(tab.title);
+        output += `${title}${d}${url}\n`;
+      } else {
+        output += `${url}\n`;
+      }
+    }
+  }
+
+  return output;
 }
 
 function showNotification() {

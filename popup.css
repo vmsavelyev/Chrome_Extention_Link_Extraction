@@ -351,6 +351,24 @@ body {
   transform: scale(0.98);
 }
 
+.copy-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.copy-button.copy-selected {
+  background: #34c759;
+}
+
+.copy-button.copy-selected:hover {
+  background: #2da94e;
+}
+
+.selected-count {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
 .output {
   padding: 16px;
   min-height: 200px;

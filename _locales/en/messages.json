@@ -102,5 +102,13 @@
   "contextMenuCopySelected": {
     "message": "Copy selected tabs",
     "description": "Context menu item for copying selected tabs"
+  },
+  "copySelected": {
+    "message": "Selected",
+    "description": "Button to copy selected tabs"
+  },
+  "copyAll": {
+    "message": "All",
+    "description": "Button to copy all tabs"
   }
 }
