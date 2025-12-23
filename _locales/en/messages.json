@@ -98,5 +98,9 @@
   "group_many": {
     "message": "groups",
     "description": "Plural 5+"
+  },
+  "contextMenuCopySelected": {
+    "message": "Copy selected tabs",
+    "description": "Context menu item for copying selected tabs"
   }
 }

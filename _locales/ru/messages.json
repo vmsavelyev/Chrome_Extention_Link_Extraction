@@ -98,5 +98,9 @@
   "group_many": {
     "message": "групп",
     "description": "Склонение для 5+"
+  },
+  "contextMenuCopySelected": {
+    "message": "Копировать выделенные вкладки",
+    "description": "Пункт контекстного меню для копирования выделенных вкладок"
   }
 }

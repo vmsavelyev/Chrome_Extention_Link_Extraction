@@ -82,11 +82,29 @@ function applyTranslations(updateData = false) {
   }
 }
 
-async function loadSavedLanguage() {
+async function loadSavedSettings() {
   try {
-    const result = await chrome.storage.local.get(['language']);
+    const result = await chrome.storage.local.get([
+      'language',
+      'format',
+      'useGrouping',
+      'showTitle',
+      'csvDelimiter'
+    ]);
     if (result.language) {
       currentLang = result.language;
+    }
+    if (result.format) {
+      currentFormat = result.format;
+    }
+    if (result.useGrouping !== undefined) {
+      useGrouping = result.useGrouping;
+    }
+    if (result.showTitle !== undefined) {
+      showTitle = result.showTitle;
+    }
+    if (result.csvDelimiter) {
+      csvDelimiter = result.csvDelimiter;
     }
   } catch (e) {
     currentLang = 'ru';
@@ -108,9 +126,18 @@ function updateLangButtons() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  await loadSavedLanguage();
+  await loadSavedSettings();
   updateLangButtons();
+  updateActiveButton();
+  updateCsvOptionsVisibility();
   applyTranslations();
+
+  // Применить загруженные настройки к UI
+  document.getElementById('groupCheckbox').checked = useGrouping;
+  document.getElementById('titleCheckbox').checked = showTitle;
+  document.querySelectorAll('.delimiter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.delimiter === csvDelimiter);
+  });
 
   await loadTabs();
   updateTabCount();
@@ -125,37 +152,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  document.getElementById('listBtn').addEventListener('click', () => {
+  document.getElementById('listBtn').addEventListener('click', async () => {
     currentFormat = 'list';
     updateActiveButton();
     updateCsvOptionsVisibility();
     displayData();
+    await chrome.storage.local.set({ format: currentFormat });
   });
 
-  document.getElementById('csvBtn').addEventListener('click', () => {
+  document.getElementById('csvBtn').addEventListener('click', async () => {
     currentFormat = 'csv';
     updateActiveButton();
     updateCsvOptionsVisibility();
     displayData();
+    await chrome.storage.local.set({ format: currentFormat });
   });
 
   document.querySelectorAll('.delimiter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       document.querySelectorAll('.delimiter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       csvDelimiter = btn.dataset.delimiter;
       displayData();
+      await chrome.storage.local.set({ csvDelimiter: csvDelimiter });
     });
   });
 
-  document.getElementById('groupCheckbox').addEventListener('change', (e) => {
+  document.getElementById('groupCheckbox').addEventListener('change', async (e) => {
     useGrouping = e.target.checked;
     displayData();
+    await chrome.storage.local.set({ useGrouping: useGrouping });
   });
 
-  document.getElementById('titleCheckbox').addEventListener('change', (e) => {
+  document.getElementById('titleCheckbox').addEventListener('change', async (e) => {
     showTitle = e.target.checked;
     displayData();
+    await chrome.storage.local.set({ showTitle: showTitle });
   });
 
   document.getElementById('copyBtn').addEventListener('click', () => {
