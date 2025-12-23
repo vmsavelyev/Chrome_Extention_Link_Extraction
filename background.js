@@ -11,11 +11,15 @@ const defaultSettings = {
 const translations = {
   ru: {
     noGroup: 'Без группы',
-    untitled: 'Без названия'
+    untitled: 'Без названия',
+    copiedTitle: 'Скопировано',
+    copiedMessage: 'Выделенные вкладки скопированы в буфер обмена'
   },
   en: {
     noGroup: 'No Group',
-    untitled: 'Untitled'
+    untitled: 'Untitled',
+    copiedTitle: 'Copied',
+    copiedMessage: 'Selected tabs copied to clipboard'
   }
 };
 
@@ -72,8 +76,9 @@ async function copySelectedTabs() {
     // Копировать в буфер обмена
     await copyToClipboard(text);
 
-    // Показать badge уведомление
+    // Показать уведомления
     showBadgeNotification();
+    showNotification(settings.language, tabs.length);
 
   } catch (error) {
     console.error('Error copying tabs:', error);
@@ -300,4 +305,76 @@ function showBadgeNotification() {
   setTimeout(() => {
     chrome.action.setBadgeText({ text: '' });
   }, 2000);
+}
+
+// Показ уведомления через инъекцию в активную вкладку
+async function showNotification(language, tabCount) {
+  const lang = translations[language] || translations.ru;
+  const message = `${lang.copiedMessage} (${tabCount})`;
+
+  try {
+    // Получить активную вкладку
+    const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    if (!activeTab || !activeTab.id || activeTab.url.startsWith('chrome://') || activeTab.url.startsWith('edge://')) {
+      // Для системных страниц используем только badge
+      return;
+    }
+
+    // Инъектировать уведомление в страницу
+    await chrome.scripting.executeScript({
+      target: { tabId: activeTab.id },
+      func: (msg) => {
+        // Удалить предыдущее уведомление если есть
+        const existing = document.getElementById('cozy-link-notification');
+        if (existing) existing.remove();
+
+        // Создать уведомление
+        const notification = document.createElement('div');
+        notification.id = 'cozy-link-notification';
+        notification.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>${msg}</span>
+        `;
+        notification.style.cssText = `
+          position: fixed;
+          top: 16px;
+          right: 16px;
+          transform: translateX(120%);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 14px 20px;
+          background: #1d1d1f;
+          color: white;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          z-index: 2147483647;
+          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        `;
+        notification.querySelector('svg').style.color = '#34c759';
+
+        document.body.appendChild(notification);
+
+        // Анимация появления (выезжает справа)
+        requestAnimationFrame(() => {
+          notification.style.transform = 'translateX(0)';
+        });
+
+        // Автоматическое скрытие
+        setTimeout(() => {
+          notification.style.transform = 'translateX(120%)';
+          setTimeout(() => notification.remove(), 300);
+        }, 2500);
+      },
+      args: [message]
+    });
+  } catch (error) {
+    console.log('Could not show notification:', error.message);
+  }
 }
