@@ -36,6 +36,7 @@ const translations = {
     group_few: 'группы',
     group_many: 'групп',
     shortcutLabel: 'Горячая клавиша',
+    shortcutDesc: 'Копирование выделенных вкладок',
     configureShortcut: 'Настроить',
     notSet: 'Не задано'
   },
@@ -66,6 +67,7 @@ const translations = {
     group_few: 'groups',
     group_many: 'groups',
     shortcutLabel: 'Keyboard shortcut',
+    shortcutDesc: 'Copy selected tabs',
     configureShortcut: 'Configure',
     notSet: 'Not set'
   }

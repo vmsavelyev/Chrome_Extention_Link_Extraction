@@ -119,6 +119,10 @@
     "message": "Keyboard shortcut",
     "description": "Label for keyboard shortcut display"
   },
+  "shortcutDesc": {
+    "message": "Copy selected tabs",
+    "description": "Keyboard shortcut description"
+  },
   "configureShortcut": {
     "message": "Configure",
     "description": "Button to configure keyboard shortcut"

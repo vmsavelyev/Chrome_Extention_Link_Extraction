@@ -24,7 +24,7 @@
     "copy-selected-tabs": {
       "suggested_key": {
         "default": "Alt+Shift+C",
-        "mac": "Alt+Shift+C"
+        "mac": "Shift+Alt+C"
       },
       "description": "__MSG_commandCopySelected__"
     }
